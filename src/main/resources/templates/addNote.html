@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add note</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+</head>
+<body>
+
+<div>
+    <form th:object="${note}" action="/addNote" method="post">
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="head" name="head" placeholder="head" type="text" th:field="*{head}" class="validate">
+                        <!--<label for="username">Username</label>-->
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">remove_red_eye</i>
+                        <input id="content" name="content" placeholder="content" type="text" th:field="*{body}" class="validate">
+                        <!--<label for="password">Password</label>-->
+                    </div>
+                    <input class="btn waves-effect waves-light" type="submit" value="Submit">
+                    <i class="material-icons right">send</i>
+                    </input>
+                </div>
+            </form>
+        </div>
+
+    </form>
+</div>
+
+
+</body>
+</html>

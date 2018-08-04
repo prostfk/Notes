@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+</head>
+<body>
+
+    <h1>Your notes</h1>
+
+    <div th:each="note : ${notes}" style="border: solid dimgray; border-radius: 5px; align-content: center">
+        <h1 th:text="${note.head}"></h1>
+        <h4 th:text="${note.body}"></h4>
+        <a th:href="'/change/' + ${note.id}" class="btn waves-effect waves-light">Change</a>
+    </div>
+
+
+
+</body>
+</html>
