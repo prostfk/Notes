@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+</head>
+<body>
+
+<div th:fragment="navbar" class="navbar teal darken-1">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo right">Logo</a>
+            <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="/auth">Auth</a></li>
+                <li><a href="/registration">Registration</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+<div sec:authorize="!isAuthenticated()">
+    Please, <a href="/auth" class="waves-effect waves-light btn">Auth</a>
+</div>
+<div sec:authorize="isAuthenticated()">
+    Hello, <div sec:authentication="name"></div>
+    To logout click <a href="/logout" class="waves-effect waves-light btn">here</a>
+</div>
+
+</body>
+</html>

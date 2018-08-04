@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <title>Auth</title>
+    <style>
+        .container{
+            align-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <form action="/auth" method="post">
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="username" name="username" placeholder="username" type="text" class="validate">
+                        <!--<label for="username">Username</label>-->
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">remove_red_eye</i>
+                        <input id="password" name="password" placeholder="password" type="password" class="validate">
+                        <!--<label for="password">Password</label>-->
+                    </div>
+                    <input class="btn waves-effect waves-light" type="submit" value="Submit">
+                        <i class="material-icons right">send</i>
+                    </input>
+                </div>
+            </form>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
