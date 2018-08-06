@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.List;
 
 @Secured(value = "ROLE_USER")
@@ -45,6 +47,7 @@ public class UserController {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findUserByUsername(name);
         List<Note> notesByUser = noteRepository.findNotesByUser(user);
+        Collections.reverse(notesByUser);
         return new ModelAndView("myNotes", "notes", notesByUser);
     }
 
@@ -64,5 +67,21 @@ public class UserController {
         }
         return "redirect:/myNotes";
     }
+
+    @GetMapping(value = "/delete/{id}")
+    public String getDeletePage(@PathVariable String id){
+        Note noteById = noteRepository.findNoteById(id);
+        noteRepository.delete(noteById);
+        return "redirect:/myNotes";
+    }
+
+    @GetMapping(value = "/search")
+    public ModelAndView searchNotes(@RequestParam(value = "searchString") String searchString){
+        ModelAndView mav = new ModelAndView("myNotes");
+        List<Note> notes = noteRepository.findNotesByHeadIsLikeIgnoreCase(searchString);
+        mav.addObject("notes", notes);
+        return mav;
+    }
+
 
 }
