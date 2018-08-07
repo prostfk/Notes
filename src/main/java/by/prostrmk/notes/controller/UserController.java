@@ -1,19 +1,21 @@
 package by.prostrmk.notes.controller;
 
 import by.prostrmk.notes.model.entity.Note;
+import by.prostrmk.notes.model.entity.Token;
 import by.prostrmk.notes.model.entity.User;
 import by.prostrmk.notes.model.repository.NoteRepository;
+import by.prostrmk.notes.model.repository.TokenRepository;
 import by.prostrmk.notes.model.repository.UserRepository;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
@@ -23,10 +25,16 @@ import java.util.List;
 public class UserController {
 
     @Autowired
+    private TokenRepository tokenRepository;
+
+    @Autowired
     private NoteRepository noteRepository;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     @GetMapping(value = "/addNote")
     public ModelAndView addNote(){
@@ -81,6 +89,23 @@ public class UserController {
         List<Note> notes = noteRepository.findNotesByHeadIsLikeIgnoreCase(searchString);
         mav.addObject("notes", notes);
         return mav;
+    }
+
+    @PostMapping(value = "/authRest")
+    @ResponseBody
+    public User restAuth(User user, HttpServletRequest request){
+        User userByUsername = userRepository.findUserByUsername(user.getUsername());
+        user.setPassword(encoder.encode(user.getPassword()));
+        if (userByUsername!=null){
+            String value = RandomStringUtils.random(15, true, true);
+            Token token = new Token(value, userByUsername);
+            userByUsername.setToken(token);
+            token.setUser(userByUsername);
+            request.getSession().setAttribute("token", token);
+            tokenRepository.save(token);
+            return userByUsername;
+        }
+        return null;
     }
 
 

@@ -7,10 +7,12 @@ import by.prostrmk.notes.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
+@RequestMapping(value = "/rest")
 public class RestController {
 
     @Autowired
@@ -19,16 +21,19 @@ public class RestController {
     @Autowired
     private NoteRepository noteRepository;
 
-    @GetMapping(value = "/rest/users", produces = "application/json")
+
+    @GetMapping(value = "/users", produces = "application/json")
     public List<User> getUsers(){
         return userRepository.findAll();
     }
 
-    @GetMapping(value = "/rest/myNotes", produces = "application/json")
+    @GetMapping(value = "/myNotes", produces = "application/json")
     public List<Note> getNotes(){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User userByUsername = userRepository.findUserByUsername(name);
         return noteRepository.findNotesByUser(userByUsername);
     }
+
+
 
 }
