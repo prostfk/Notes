@@ -7,8 +7,10 @@ import by.prostrmk.notes.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Collections;
 import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
@@ -28,10 +30,12 @@ public class RestController {
     }
 
     @GetMapping(value = "/myNotes", produces = "application/json")
-    public List<Note> getNotes(){
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        User userByUsername = userRepository.findUserByUsername(name);
-        return noteRepository.findNotesByUser(userByUsername);
+    public List<Note> getNotes(@RequestBody User user){
+        if (user!=null){
+            User userByUsername = userRepository.findUserByUsername(user.getUsername());
+            return noteRepository.findNotesByUser(userByUsername);
+        }
+        return Collections.emptyList();
     }
 
 

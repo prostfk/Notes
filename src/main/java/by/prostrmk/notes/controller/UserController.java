@@ -24,17 +24,13 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    @Autowired
-    private TokenRepository tokenRepository;
+
 
     @Autowired
     private NoteRepository noteRepository;
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder encoder;
 
     @GetMapping(value = "/addNote")
     public ModelAndView addNote(){
@@ -91,22 +87,7 @@ public class UserController {
         return mav;
     }
 
-    @PostMapping(value = "/authRest")
-    @ResponseBody
-    public User restAuth(User user, HttpServletRequest request){
-        User userByUsername = userRepository.findUserByUsername(user.getUsername());
-        user.setPassword(encoder.encode(user.getPassword()));
-        if (userByUsername!=null){
-            String value = RandomStringUtils.random(15, true, true);
-            Token token = new Token(value, userByUsername);
-            userByUsername.setToken(token);
-            token.setUser(userByUsername);
-            request.getSession().setAttribute("token", token);
-            tokenRepository.save(token);
-            return userByUsername;
-        }
-        return null;
-    }
+
 
 
 }
